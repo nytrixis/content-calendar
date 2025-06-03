@@ -14,7 +14,7 @@ interface CalendarStatsProps {
   currentDate: Date
 }
 
-export default function CalendarStats({ posts, currentDate }: CalendarStatsProps) {
+export default function CalendarStats({ posts }: CalendarStatsProps) {
   const now = getCurrentISTTime()
   
   // Use the same logic as your working debug code

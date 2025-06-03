@@ -26,7 +26,6 @@ export default function PostQuickView({ post, onClose, onEdit, onDelete }: PostQ
     }
   }
   const hashtagsText = post.hashtags.map(tag => `#${tag}`).join(' ')
-  const fullPostContent = `${post.caption}\n\n${hashtagsText}`
 
   const formatDate = (dateString: string) => {
   return formatDisplayDate(dateString)

@@ -14,7 +14,7 @@ const initialAssets: Asset[] = [
 ];
 
 export default function AssetLibrary() {
-  const [assets, setAssets] = useState<Asset[]>(initialAssets);
+  const [assets] = useState<Asset[]>(initialAssets);
   const [filter, setFilter] = useState<string>("");
 
   const filteredAssets = filter

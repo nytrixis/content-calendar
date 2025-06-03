@@ -4,8 +4,6 @@ import { Post, PostStatus, Platform, PostType } from './types'
 import { motion } from '@/lib/framer'
 import ImageUpload from './ImageUpload'
 import {
-  formatDateForInput,
-  formatTimeForInput,
   createISTDateTime,
   getCurrentISTTime,
   convertToIST

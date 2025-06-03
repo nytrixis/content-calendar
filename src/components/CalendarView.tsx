@@ -1,5 +1,5 @@
 'use client'
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { Post } from './types'
 import { motion } from '@/lib/framer'
 import CalendarLegend from './CalendarLegend'
@@ -8,7 +8,6 @@ import {
   getISTHour, 
   convertToIST,
   getCurrentISTTime,
-  getISTDay,
   getISTMonth,
   getISTYear
 } from '@/lib/dateUtils'
@@ -223,7 +222,6 @@ function MonthView({ currentDate, posts, onPostClick }: {
   // Generate calendar days in IST
   const istCurrentDate = convertToIST(currentDate)
   const monthStart = new Date(getISTYear(istCurrentDate), getISTMonth(istCurrentDate), 1)
-  const monthEnd = new Date(getISTYear(istCurrentDate), getISTMonth(istCurrentDate) + 1, 0)
   const startDate = new Date(monthStart)
   startDate.setDate(startDate.getDate() - monthStart.getDay())
   

@@ -16,7 +16,7 @@ const initialIdeas: Idea[] = [
 ];
 
 export default function IdeaBacklog({ onConvert }: { onConvert: (idea: Idea) => void }) {
-  const [ideas, setIdeas] = useState<Idea[]>(initialIdeas);
+  const [ideas] = useState<Idea[]>(initialIdeas);
   const [sort, setSort] = useState<"impact" | "type" | "platform">("impact");
 
   const sortedIdeas = [...ideas].sort((a, b) => {
