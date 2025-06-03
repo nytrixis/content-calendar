@@ -1,5 +1,5 @@
 'use client'
-import { Post } from './types'
+import { Platform, Post } from './types'
 import { motion } from '@/lib/framer'
 import {
   getCurrentISTTime,
@@ -36,7 +36,7 @@ export default function CalendarStats({ posts }: CalendarStatsProps) {
   }
 
   const getPlatformCount = (posts: Post[], platform: string) => {
-    return posts.filter(post => post.platform.includes(platform as any)).length
+    return posts.filter(post => post.platform.includes(platform as Platform)).length
   }
 
   const stats = [

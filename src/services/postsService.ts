@@ -141,17 +141,17 @@ export class PostsService {
   }
 
   // Transform database row to Post interface
-  private static transformPost(data: any): Post {
+  private static transformPost(data: Record<string, any>): Post {
     return {
-      id: data.id,
-      title: data.title,
-      platform: data.platform,
-      caption: data.caption,
-      hashtags: data.hashtags || [],
-      assetUrl: data.asset_url,
-      scheduledAt: data.scheduled_at,
-      type: data.type,
-      status: data.status
+        id: data.id,
+        title: data.title,
+        platform: data.platform,
+        caption: data.caption,
+        hashtags: data.hashtags || [],
+        assetUrl: data.asset_url,
+        scheduledAt: data.scheduled_at,
+        type: data.type,
+        status: data.status
     }
-  }
+}
 }
