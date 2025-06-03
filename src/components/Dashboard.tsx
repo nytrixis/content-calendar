@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react'
 import { Post } from './types'
 import { PostsService } from '@/services/postsService'
-import { useAuth } from '@/contexts/AuthContext'
 import { useRealtimePosts } from '@/hooks/useRealtimePosts'
 import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation'
 import PostCard from './PostCard'

@@ -11,12 +11,11 @@ export default function ResetPasswordPage() {
   const [success, setSuccess] = useState(false)
   
   const router = useRouter()
-  const searchParams = useSearchParams()
 
   useEffect(() => {
     // Handle the auth callback
     const handleAuthCallback = async () => {
-      const { data, error } = await supabase.auth.getSession()
+      const { error } = await supabase.auth.getSession()
       if (error) {
         setError('Invalid or expired reset link')
       }
