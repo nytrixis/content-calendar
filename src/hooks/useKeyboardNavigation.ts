@@ -24,8 +24,8 @@ export function useKeyboardNavigation({
       }
 
       switch (event.key) {
-        case 'n':
-        case 'N':
+        case 'd':
+        case 'D':
           if (event.ctrlKey || event.metaKey) {
             event.preventDefault()
             onCreatePost()

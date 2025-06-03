@@ -12,8 +12,9 @@ import CalendarStats from './CalendarStats'
 import PostQuickView from './PostQuickView'
 import { motion, AnimatePresence } from '@/lib/framer'
 import KeyboardShortcuts from './KeyboardShortcuts'
-import { convertToIST, getCurrentISTTime, isSameDayIST } from '@/lib/dateUtils' // Add isSameDayIST import
+import { convertToIST, getCurrentISTTime, isSameDayIST } from '@/lib/dateUtils'
 import TimezoneIndicator from './TimezoneIndicator'
+import UserProfile from './UserProfile'
 
 export default function Dashboard() {
   const { posts, loading, refetch } = useRealtimePosts()
@@ -29,14 +30,14 @@ export default function Dashboard() {
     }
   })
 
-  // Add this useEffect to check your posts data    
+  // Debug posts data      
   useEffect(() => {
     const today = getCurrentISTTime();
     console.log('=== TODAY DEBUG ===');
     console.log('Current IST Time:', today);
     console.log('Today Date String:', today.toDateString());
     console.log('Today ISO:', today.toISOString());
-    
+       
     // Check each post against today
     posts.forEach(post => {
         const isSame = isSameDayIST(post.scheduledAt, today);
@@ -49,13 +50,22 @@ export default function Dashboard() {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null)
   const [filter, setFilter] = useState<string>('All')
   const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar')
-  const { logout } = useAuth()
+  const { signOut } = useAuth()
 
   const handleCreatePost = async (postData: Omit<Post, 'id'>) => {
-    const newPost = await PostsService.createPost(postData)
-    if (newPost) {
-      setShowForm(false)
-      refetch()
+    console.log('Dashboard: Creating post with data:', postData) // Debug log
+    
+    try {
+      const newPost = await PostsService.createPost(postData)
+      if (newPost) {
+        console.log('Dashboard: Post created successfully:', newPost) // Debug log
+        setShowForm(false)
+        refetch()
+      } else {
+        console.error('Dashboard: Failed to create post - no data returned')
+      }
+    } catch (error) {
+      console.error('Dashboard: Error creating post:', error)
     }
   }
 
@@ -131,6 +141,9 @@ export default function Dashboard() {
           </div>
           
           <div className="flex items-center gap-4">
+            {/* User Profile */}
+            <UserProfile />
+            
             {/* View Toggle */}
             <div className="flex gap-1 bg-background rounded-lg p-1">
               <button
@@ -148,24 +161,21 @@ export default function Dashboard() {
                 className={`px-3 py-2 rounded text-sm ${
                   viewMode === 'list'
                     ? 'bg-accentPurple text-white'
-                    : 'text-gray-400 hover:text-white'                    
+                    : 'text-gray-400 hover:text-white'
                 }`}
               >
                 📋 List
               </button>
             </div>
+            
             <button
-              onClick={() => setShowForm(true)}
+              onClick={() => {
+                console.log('Create post button clicked') // Debug log
+                setShowForm(true)
+              }}
               className="bg-accentPurple text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition-colors"
             >
               + New Post
-            </button>
-            
-            <button
-              onClick={logout}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
-            >
-              Logout
             </button>
           </div>
         </div>
@@ -257,6 +267,7 @@ export default function Dashboard() {
               post={editingPost ?? undefined}
               onSubmit={editingPost ? handleUpdatePost : handleCreatePost}
               onCancel={() => {
+                console.log('Form cancelled') // Debug log
                 setShowForm(false)
                 setEditingPost(null)
               }}
@@ -272,12 +283,8 @@ export default function Dashboard() {
           onDelete={handleDeletePost}
         />
       </div>
+      
       <KeyboardShortcuts />
     </div>
   )
 }
-
-// Remove this function - it's causing the error!
-// function isSameDayIST(scheduledAt: string, today: Date) {
-//     throw new Error('Function not implemented.')
-// }

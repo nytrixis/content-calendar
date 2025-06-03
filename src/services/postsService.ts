@@ -12,6 +12,7 @@ interface DatabasePost {
   scheduled_at: string
   type: PostType
   status: PostStatus
+  user_id: string
   created_at: string
   updated_at: string
 }
@@ -19,9 +20,13 @@ interface DatabasePost {
 export class PostsService {
   static async getAllPosts(): Promise<Post[]> {
     try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
+
       const { data, error } = await supabase
         .from('posts')
         .select('*')
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false })
 
       if (error) {
@@ -38,6 +43,9 @@ export class PostsService {
 
   static async createPost(postData: Omit<Post, 'id'>): Promise<Post | null> {
     try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
+
       const { data, error } = await supabase
         .from('posts')
         .insert([{
@@ -48,7 +56,8 @@ export class PostsService {
           asset_url: postData.assetUrl,
           scheduled_at: postData.scheduledAt,
           type: postData.type,
-          status: postData.status
+          status: postData.status,
+          user_id: user.id
         }])
         .select()
         .single()
@@ -67,6 +76,9 @@ export class PostsService {
 
   static async updatePost(id: string, postData: Omit<Post, 'id'>): Promise<Post | null> {
     try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
+
       const { data, error } = await supabase
         .from('posts')
         .update({
@@ -81,6 +93,7 @@ export class PostsService {
           updated_at: new Date().toISOString()
         })
         .eq('id', id)
+        .eq('user_id', user.id)
         .select()
         .single()
 
@@ -98,10 +111,14 @@ export class PostsService {
 
   static async deletePost(id: string): Promise<boolean> {
     try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
+
       const { error } = await supabase
         .from('posts')
         .delete()
         .eq('id', id)
+        .eq('user_id', user.id)
 
       if (error) {
         console.error('Error deleting post:', error)
@@ -117,10 +134,14 @@ export class PostsService {
 
   static async getPostById(id: string): Promise<Post | null> {
     try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
+
       const { data, error } = await supabase
         .from('posts')
         .select('*')
         .eq('id', id)
+        .eq('user_id', user.id)
         .single()
 
       if (error) {
@@ -137,10 +158,14 @@ export class PostsService {
 
   static async getPostsByStatus(status: string): Promise<Post[]> {
     try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
+
       const { data, error } = await supabase
         .from('posts')
         .select('*')
         .eq('status', status)
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false })
 
       if (error) {

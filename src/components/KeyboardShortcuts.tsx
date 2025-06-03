@@ -6,7 +6,7 @@ export default function KeyboardShortcuts() {
   const [showShortcuts, setShowShortcuts] = useState(false)
 
   const shortcuts = [
-    { key: 'Ctrl/Cmd + N', description: 'Create new post' },
+    { key: 'Ctrl/Cmd + D', description: 'Create new post' },
     { key: 'Ctrl/Cmd + V', description: 'Toggle calendar/list view' },
     { key: 'Escape', description: 'Close modals' },
     { key: '?', description: 'Show/hide shortcuts' },
