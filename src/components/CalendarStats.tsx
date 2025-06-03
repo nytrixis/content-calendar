@@ -1,10 +1,11 @@
 'use client'
 import { Post } from './types'
 import { motion } from '@/lib/framer'
-import { 
+import {
   getCurrentISTTime,
-  getStartOfDayIST,
-  getEndOfDayIST,
+  isSameDayIST,
+  isThisWeekIST,
+  isThisMonthIST,
   convertToIST
 } from '@/lib/dateUtils'
 
@@ -15,31 +16,20 @@ interface CalendarStatsProps {
 
 export default function CalendarStats({ posts, currentDate }: CalendarStatsProps) {
   const now = getCurrentISTTime()
-  const istCurrentDate = convertToIST(currentDate)
   
-  const startOfMonth = new Date(istCurrentDate.getFullYear(), istCurrentDate.getMonth(), 1)
-  const endOfMonth = new Date(istCurrentDate.getFullYear(), istCurrentDate.getMonth() + 1, 0)
-  
-  const startOfWeek = new Date(now)
-  startOfWeek.setDate(now.getDate() - now.getDay())
-  const endOfWeek = new Date(startOfWeek)
-  endOfWeek.setDate(startOfWeek.getDate() + 6)
-  
-  const startOfDay = getStartOfDayIST(now)
-  const endOfDay = getEndOfDayIST(now)
+  // Use the same logic as your working debug code
+  const dayPosts = posts.filter(post => isSameDayIST(post.scheduledAt, now))
+  const weekPosts = posts.filter(post => isThisWeekIST(post.scheduledAt))
+  const monthPosts = posts.filter(post => isThisMonthIST(post.scheduledAt))
 
-  const getPostsInRange = (start: Date, end: Date) => {
-    return posts.filter(post => {
-      const postDate = new Date(post.scheduledAt)
-      return postDate >= start && postDate <= end
-    })
-  }
-
-  const monthPosts = getPostsInRange(startOfMonth, endOfMonth)
-  const weekPosts = getPostsInRange(startOfWeek, endOfWeek)
-  const dayPosts = getPostsInRange(startOfDay, endOfDay)
-
-
+  // Add debug logging to see what's happening
+  console.log('=== CALENDAR STATS DEBUG ===')
+  console.log('Now (IST):', now.toDateString())
+  console.log('Day posts count:', dayPosts.length)
+  console.log('Day posts:', dayPosts.map(p => `${p.title} (${convertToIST(p.scheduledAt).toDateString()})`))
+  console.log('Week posts count:', weekPosts.length)
+  console.log('Month posts count:', monthPosts.length)
+  console.log('=== END CALENDAR STATS DEBUG ===')
 
   const getStatusCount = (posts: Post[], status: string) => {
     return posts.filter(post => post.status === status).length
