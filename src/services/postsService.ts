@@ -1,5 +1,20 @@
 import { supabase } from '@/lib/supabase'
-import { Post } from '@/components/types'
+import { Post, Platform, PostStatus, PostType } from '@/components/types'
+
+// Database row interface matching your Supabase table structure
+interface DatabasePost {
+  id: string
+  title: string
+  platform: Platform[]
+  caption: string
+  hashtags: string[]
+  asset_url: string | null
+  scheduled_at: string
+  type: PostType
+  status: PostStatus
+  created_at: string
+  updated_at: string
+}
 
 export class PostsService {
   static async getAllPosts(): Promise<Post[]> {
@@ -141,17 +156,17 @@ export class PostsService {
   }
 
   // Transform database row to Post interface
-  private static transformPost(data: Record<string, any>): Post {
+  private static transformPost(data: DatabasePost): Post {
     return {
-        id: data.id,
-        title: data.title,
-        platform: data.platform,
-        caption: data.caption,
-        hashtags: data.hashtags || [],
-        assetUrl: data.asset_url,
-        scheduledAt: data.scheduled_at,
-        type: data.type,
-        status: data.status
+      id: data.id,
+      title: data.title,
+      platform: data.platform,
+      caption: data.caption,
+      hashtags: data.hashtags || [],
+      assetUrl: data.asset_url || undefined,
+      scheduledAt: data.scheduled_at,
+      type: data.type,
+      status: data.status
     }
-}
+  }
 }
