@@ -3,35 +3,37 @@ import { PostsService } from '@/services/postsService'
 
 export async function PUT(
   request: NextRequest,
-  context: { params: { id: string } }
+  context: Promise<{ params: { id: string } }>
 ) {
   try {
-    const postData = await request.json()
-    const updatedPost = await PostsService.updatePost(context.params.id, postData)
-    
+    const { params } = await context;
+    const postData = await request.json();
+    const updatedPost = await PostsService.updatePost(params.id, postData);
+
     if (!updatedPost) {
-      return NextResponse.json({ error: 'Failed to update post' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to update post' }, { status: 500 });
     }
-    
-    return NextResponse.json(updatedPost)
+
+    return NextResponse.json(updatedPost);
   } catch {
-    return NextResponse.json({ error: 'Failed to update post' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to update post' }, { status: 500 });
   }
 }
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  context: Promise<{ params: { id: string } }>
 ) {
   try {
-    const success = await PostsService.deletePost(context.params.id)
-    
+    const { params } = await context;
+    const success = await PostsService.deletePost(params.id);
+
     if (!success) {
-      return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
     }
-    
-    return NextResponse.json({ message: 'Post deleted successfully' })
+
+    return NextResponse.json({ message: 'Post deleted successfully' });
   } catch {
-    return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
   }
 }
