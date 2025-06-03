@@ -50,7 +50,6 @@ export default function Dashboard() {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null)
   const [filter, setFilter] = useState<string>('All')
   const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar')
-  const { signOut } = useAuth()
 
   const handleCreatePost = async (postData: Omit<Post, 'id'>) => {
     console.log('Dashboard: Creating post with data:', postData) // Debug log

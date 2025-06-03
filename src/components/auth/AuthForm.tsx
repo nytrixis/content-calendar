@@ -37,7 +37,7 @@ export default function AuthForm({ mode, onToggleMode }: AuthFormProps) {
           setError(error.message)
         }
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred')
     } finally {
       setLoading(false)
