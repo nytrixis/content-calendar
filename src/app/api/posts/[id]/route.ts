@@ -3,11 +3,11 @@ import { PostsService } from '@/services/postsService'
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const postData = await request.json()
-    const updatedPost = await PostsService.updatePost(params.id, postData)
+    const updatedPost = await PostsService.updatePost(context.params.id, postData)
     
     if (!updatedPost) {
       return NextResponse.json({ error: 'Failed to update post' }, { status: 500 })
@@ -21,10 +21,10 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const success = await PostsService.deletePost(params.id)
+    const success = await PostsService.deletePost(context.params.id)
     
     if (!success) {
       return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 })
