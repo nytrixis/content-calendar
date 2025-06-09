@@ -54,16 +54,7 @@ export function createISTDateTime(dateString: string, timeString: string): Date 
     
     // Create date in IST (as local time)
     const istDate = new Date(year, month - 1, day, hours, minutes, 0, 0);
-    
-    // Convert to UTC for storage by subtracting IST offset
-    const utcTime = istDate.getTime() - IST_OFFSET;
-    const utcDate = new Date(utcTime);
-    
-    console.log('Created IST date:', istDate);
-    console.log('Converted to UTC:', utcDate);
-    console.log('UTC ISO string:', utcDate.toISOString());
-    
-    return utcDate;
+    return istDate;
     
   } catch (error) {
     console.error('Error in createISTDateTime:', error);
