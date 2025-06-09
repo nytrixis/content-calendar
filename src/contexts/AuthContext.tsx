@@ -54,20 +54,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Get initial session
     const getInitialSession = async () => {
-      await supabase.auth.refreshSession();
-      const { data: { session } } = await supabase.auth.getSession()
-      setSession(session)
-      setUser(session?.user ?? null)
-      
-      if (session?.user) {
-        const profile = await fetchUserProfile(session.user.id)
-        setUserProfile(profile)
-      } else {
-      setUserProfile(null)
-    }
-      
-      setLoading(false)
-    }
+  await supabase.auth.refreshSession();
+  const { data: { session }, error } = await supabase.auth.getSession();
+  console.log('Session:', session, 'Error:', error);
+  setSession(session);
+  setUser(session?.user ?? null);
+
+  if (session?.user) {
+    const profile = await fetchUserProfile(session.user.id);
+    setUserProfile(profile);
+  } else {
+    setUserProfile(null);
+  }
+
+    setLoading(false);
+};
 
     getInitialSession()
 
